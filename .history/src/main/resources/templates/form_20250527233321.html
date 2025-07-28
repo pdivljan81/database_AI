@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <title>PlantUML Generator</title>
+
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- Bootstrap Icons (opciono) -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
+    />
+
+    <style>
+      body {
+        background: #f8f9fa;
+      }
+
+      .uml-block {
+        background: #fdfdfd;
+        padding: 0.75rem;
+        overflow-x: auto;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+        position: relative;
+        border: 1px solid #dee2e6;
+        border-radius: 0.25rem;
+        margin-top: 1rem;
+      }
+
+      .copy-btn {
+        position: absolute;
+        top: 6px;
+        right: 6px;
+        padding: 2px 6px;
+        font-size: 0.7rem;
+        line-height: 1.2;
+        z-index: 10;
+        border-radius: 4px;
+        white-space: nowrap;
+        max-width: fit-content;
+      }
+
+      .btn-xs {
+        padding: 2px 6px;
+        font-size: 0.65rem;
+        line-height: 1.2;
+      }
+
+      footer {
+        text-align: center;
+        font-size: 0.9rem;
+        color: #6c757d;
+        padding: 1rem 0;
+        border-top: 1px solid #dee2e6;
+        margin-top: 3rem;
+      }
+
+      header img {
+        max-width: 100%;
+        height: auto;
+        margin-bottom: 2rem;
+        border-radius: 0.25rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container py-4">
+
+      <!-- HEADER -->
+      <header>
+        <img src="/images/header.jpg" alt="Header slika" class="img-fluid" />
+      </header>
+
+      <!-- FORMA -->
+      <h2 class="mb-4">Unesite tekstualnu specifikaciju</h2>
+
+      <form method="post" th:action="@{/generate-script}" class="mb-4">
+        <div class="mb-3">
+          <label for="text" class="form-label">Specifikacija:</label>
+          <textarea
+            id="text"
+            name="text"
+            class="form-control"
+            required
+            placeholder="class A {\n  String ime\n}"
+            th:text="${inputText}"
+          ></textarea>
+        </div>
+
+        <div class="mb-3">
+          <label for="model" class="form-label">Izaberi model:</label>
+          <select class="form-select" name="model" id="model" required>
+            <option value="mistral" th:selected="${selectedModel == 'mistral'}">Mistral-Large-2</option>
+            <option value="gemini" th:selected="${selectedModel == 'gemini'}">Gemini-1.5-Flash</option>
+            <option value="llama" th:selected="${selectedModel == 'llama'}">Llama-3-70B</option>
+          </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Generiši PlantUML skriptu</button>
+      </form>
+
+      <!-- UML SKRIPTA -->
+      <div th:if="${umlText}">
+        <h4>PlantUML skripta:</h4>
+        <div class="uml-block position-relative">
+          <button
+            class="btn btn-outline-secondary btn-xs copy-btn"
+            onclick="copyToClipboard()"
+          >
+            <i class="bi bi-clipboard"></i> Kopiraj
+          </button>
+          <pre id="umlOutput" th:text="${umlText}"></pre>
+        </div>
+      </div>
+
+      <!-- UML DIJAGRAM -->
+      <div th:if="${encodedUml}" class="mt-4">
+        <h4>UML Dijagram:</h4>
+        <div class="card p-3">
+          <img
+            th:src="@{'https://www.plantuml.com/plantuml/svg/' + ${encodedUml}}"
+            class="img-fluid border rounded"
+            alt="UML Dijagram"
+          />
+        </div>
+      </div>
+
+      <!-- FOOTER -->
+      <footer>
+        &copy; Dizajn i razvoj: Predrag Divljan2025.
+      </footer>
+    </div>
+
+    <script>
+      function copyToClipboard() {
+        const text = document.getElementById("umlOutput").innerText;
+        navigator.clipboard.writeText(text).then(() => {
+          const btn = document.querySelector(".copy-btn");
+          btn.innerText = "Kopirano!";
+          setTimeout(() => (btn.innerHTML = '<i class=\"bi bi-clipboard\"></i> Kopiraj'), 2000);
+        });
+      }
+    </script>
+  </body>
+</html>

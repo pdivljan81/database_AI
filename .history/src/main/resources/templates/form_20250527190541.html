@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>PlantUML Generator</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            padding: 2rem;
+            background: #f5f5f5;
+        }
+        textarea {
+            width: 100%;
+            height: 150px;
+        }
+        .buttons {
+            margin-top: 1rem;
+        }
+        pre {
+            background: #eee;
+            padding: 1rem;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            position: relative;
+        }
+        .copy-btn {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            padding: 4px 8px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        .copy-btn:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+<h2>Unesi opis dijagrama</h2>
+
+<form method="post" action="/generate-script">
+    <textarea name="text" required placeholder="class A {\n  String ime\n}"></textarea><br>
+    <div class="buttons">
+        <button type="submit">Generiši PlantUML skriptu</button>
+    </div>
+</form>
+
+<div th:if="${umlText}">
+    <h3>PlantUML skripta:</h3>
+    <div style="position: relative;">
+        <button class="copy-btn" onclick="copyToClipboard()">Kopiraj</button>
+        <pre id="umlOutput" th:text="${umlText}"></pre>
+    </div>
+</div>
+
+<script>
+    function copyToClipboard() {
+        const text = document.getElementById("umlOutput").innerText;
+        navigator.clipboard.writeText(text).then(() => {
+            const btn = document.querySelector(".copy-btn");
+            btn.innerText = "Kopirano!";
+            setTimeout(() => btn.innerText = "Kopiraj", 2000);
+        });
+    }
+</script>
+</body>
+</html>
