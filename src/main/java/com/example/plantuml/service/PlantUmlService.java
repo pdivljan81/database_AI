@@ -174,7 +174,7 @@ public class PlantUmlService {
 
     public String generateUmlWithLlama(String inputText) throws IOException {
         JSONObject requestBody = new JSONObject();
-        requestBody.put("model", "llama3-70b-8192");
+        requestBody.put("model", "llama-3.3-70b-versatile");
 
         JSONArray messages = new JSONArray();
         messages.put(new JSONObject()
@@ -323,3 +323,4 @@ private String fixAndFilterPlantUml(String plantUml) {
         return res.toString();
     }
 }
+
