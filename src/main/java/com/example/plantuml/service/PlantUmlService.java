@@ -15,9 +15,9 @@ import java.util.zip.Deflater;
 @Service
 public class PlantUmlService {
 
-    private static final String MISTRAL_API_URL = "https://api.mistral.ai/v1/chat/completions";
+    private static final String MISTRAL_API_URL = "https://openrouter.ai/api/v1/chat/completions";
     private static final String GEMINI_BASE_URL = "https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent?key=";
-    private static final String GROQ_API_URL = "https://openrouter.ai/api/v1/chat/completions";
+    private static final String GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions";
 
     private static final String PROMPT_HEADER =
             "Convert the following description to a PlantUML class diagram (include @startuml/@enduml):\n" +
@@ -323,5 +323,6 @@ private String fixAndFilterPlantUml(String plantUml) {
         return res.toString();
     }
 }
+
 
 
