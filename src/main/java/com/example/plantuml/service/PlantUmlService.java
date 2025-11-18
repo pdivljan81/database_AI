@@ -78,7 +78,7 @@ public class PlantUmlService {
 
     public String generateUmlFromText(String inputText) throws IOException {
         JSONObject requestBody = new JSONObject();
-        requestBody.put("model", "mistral-small-latest");
+        requestBody.put("model", "mistral-small-2501");
 
         JSONArray messages = new JSONArray();
         messages.put(new JSONObject()
@@ -323,6 +323,7 @@ private String fixAndFilterPlantUml(String plantUml) {
         return res.toString();
     }
 }
+
 
 
 
